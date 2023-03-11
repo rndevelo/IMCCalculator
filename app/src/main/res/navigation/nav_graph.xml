@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    android:label="@string/app_name"
+    app:startDestination="@id/calculatorFragment">
+    <fragment
+        android:id="@+id/calculatorFragment"
+        android:name="com.rndeveloper.imccalculator.view.CalculatorFragment"
+        tools:layout="@layout/fragment_calculator">
+        <action
+            android:id="@+id/action_calculatorFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.rndeveloper.imccalculator.view.ResultFragment"
+        tools:layout="@layout/fragment_result">
+        <action
+            android:id="@+id/action_resultFragment_to_calculatorFragment"
+            app:destination="@id/calculatorFragment"
+            app:popUpTo="@id/calculatorFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

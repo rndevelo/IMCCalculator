@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@color/background_app"
-    tools:context=".ResultActivity">
+    tools:context=".view.ResultFragment">
 
     <TextView
         android:id="@+id/tvTitle"

@@ -1,48 +1,69 @@
 package com.rndeveloper.imccalculator.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.text.DecimalFormat
 
 class CalculatorViewModel : ViewModel() {
 
-    val isMaleSelected = MutableLiveData(true)
-    val isFemaleSelected = MutableLiveData(false)
-    val currentWeight = MutableLiveData(70)
-    val currentAge = MutableLiveData(30)
-    val currentHeight = MutableLiveData(120)
-    val imc = MutableLiveData<Double>()
+    private val _isMaleSelected = MutableLiveData(true)
+    val isMaleSelected: LiveData<Boolean> = _isMaleSelected
+
+    private val _isFemaleSelected = MutableLiveData(false)
+    val isFemaleSelected: LiveData<Boolean> = _isFemaleSelected
+
+    private val _currentWeight = MutableLiveData(70)
+    val currentWeight: LiveData<Int> = _currentWeight
+
+    private val _currentAge = MutableLiveData(30)
+    val currentAge: LiveData<Int> = _currentAge
+
+    private val _currentHeight = MutableLiveData(120)
+    val currentHeight: LiveData<Int> = _currentHeight
+
+    private val _imc = MutableLiveData<Double>()
+    val imc: LiveData<Double> = _imc
+
+    fun resetData() {
+        _isMaleSelected.value = true
+        _isFemaleSelected.value = false
+        _currentWeight.value = 70
+        _currentAge.value = 30
+        _currentHeight.value = 120
+    }
 
     fun calculateIMC() {
-        val df = DecimalFormat("#.##")
+//        FIXME: Decimal format crash
+        val df = DecimalFormat("0")
         val imc =
-            currentWeight.value!! / (currentHeight.value!!.toDouble() / 100 * currentHeight.value!!.toDouble() / 100)
-        this.imc.postValue(df.format(imc).toDouble())
+            _currentWeight.value!! / (_currentHeight.value!!.toDouble() / 100 * _currentHeight.value!!.toDouble() / 100)
+        _imc.postValue(df.format(imc).toDouble())
     }
 
     fun getCurrentHeight(value: Float) {
         val df = DecimalFormat("#.##")
-        currentHeight.postValue(df.format(value).toInt())
+        _currentHeight.postValue(df.format(value).toInt())
     }
 
     fun changeGender() {
-        isMaleSelected.postValue(!isMaleSelected.value!!)
-        isFemaleSelected.postValue(!isFemaleSelected.value!!)
+        _isMaleSelected.postValue(!isMaleSelected.value!!)
+        _isFemaleSelected.postValue(!isFemaleSelected.value!!)
     }
 
     fun plusWeight() {
-        currentWeight.postValue(currentWeight.value?.plus(1))
+        _currentWeight.postValue(currentWeight.value?.plus(1))
     }
 
     fun subtractWeight() {
-        currentWeight.postValue(currentWeight.value?.minus(1))
+        _currentWeight.postValue(currentWeight.value?.minus(1))
     }
 
     fun plusAge() {
-        currentAge.postValue(currentAge.value?.plus(1))
+        _currentAge.postValue(currentAge.value?.plus(1))
     }
 
     fun subtractAge() {
-        currentAge.postValue(currentAge.value?.minus(1))
+        _currentAge.postValue(currentAge.value?.minus(1))
     }
 }
