@@ -11,19 +11,28 @@ import com.rndeveloper.imccalculator.databinding.ActivityResultBinding
 import com.rndeveloper.imccalculator.viewmodel.CalculatorViewModel
 
 class ResultActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityResultBinding
+    private val calculatorViewModel: CalculatorViewModel by viewModels()
+
     private lateinit var tvResult: TextView
-    private lateinit var tvIMC:TextView
-    private lateinit var tvDescription:TextView
+    private lateinit var tvIMC: TextView
+    private lateinit var tvDescription: TextView
     private lateinit var btnRecalculate: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_result)
-        val result:Double = intent.extras?.getDouble(IMC_KEY) ?: -1.0
+        binding = ActivityResultBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+//        val result:Double = intent.extras?.getDouble(IMC_KEY) ?: -1.0
         initComponents()
-        initUI(result)
+//        initUI(result)
         initListeners()
+        calculatorViewModel.imc.observe(this) { result ->
+            initUI(result)
+        }
     }
+
     private fun initListeners() {
         btnRecalculate.setOnClickListener { onBackPressed() }
     }
@@ -61,9 +70,9 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun initComponents() {
-        tvIMC = findViewById(R.id.tvIMC)
-        tvResult = findViewById(R.id.tvResult)
-        tvDescription = findViewById(R.id.tvDescription)
-        btnRecalculate = findViewById(R.id.btnRecalculate)
+        tvIMC = binding.tvIMC
+        tvResult = binding.tvResult
+        tvDescription = binding.tvDescription
+        btnRecalculate = binding.btnRecalculate
     }
 }
