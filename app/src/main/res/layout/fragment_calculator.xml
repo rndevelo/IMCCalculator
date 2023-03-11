@@ -109,7 +109,7 @@
                 android:id="@+id/tvHeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="120 cm"
+                android:text="@string/fragment_calculator_tvcm"
                 android:textColor="@color/white"
                 android:textSize="38sp"
                 android:textStyle="bold" />
@@ -147,7 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/weight"
+                android:text="@string/fragment_calculator_weight"
                 android:textAllCaps="true"
                 android:textColor="@color/purple_700" />
 

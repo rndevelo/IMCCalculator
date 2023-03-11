@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,10 +17,6 @@ class ResultFragment : Fragment() {
     private lateinit var binding: FragmentResultBinding
     private val calculatorViewModel: CalculatorViewModel by activityViewModels()
 
-    private lateinit var tvResult: TextView
-    private lateinit var tvIMC: TextView
-    private lateinit var tvDescription: TextView
-    private lateinit var btnRecalculate: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +30,7 @@ class ResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initComponents()
+
         initListeners()
         calculatorViewModel.imc.observe(viewLifecycleOwner) { result ->
             initUI(result)
@@ -44,35 +38,39 @@ class ResultFragment : Fragment() {
     }
 
     private fun initListeners() {
-        btnRecalculate.setOnClickListener {
+        binding.btnRecalculate.setOnClickListener {
             calculatorViewModel.resetData()
-            findNavController().navigate(R.id.action_resultFragment_to_calculatorFragment)
+            findNavController().navigateUp()
         }
     }
 
-    private fun initUI(result: Double) {
+    private fun initUI(result: Double) = with(binding) {
         tvIMC.text = result.toString()
-        when(result){
-            in 0.00..18.50 -> { //Bajo peso
+        when (result) {
+            in IMC.Section1.range -> { //Bajo peso
                 tvResult.text = getString(R.string.title_bajo_peso)
                 tvResult.setTextColor(ContextCompat.getColor(requireContext(), R.color.peso_bajo))
                 tvDescription.text = getString(R.string.description_bajo_peso)
             }
-            in 18.51..24.99 -> { //Peso normal
+
+            in IMC.Section2.range -> { //Peso normal
                 tvResult.text = getString(R.string.title_peso_normal)
                 tvResult.setTextColor(ContextCompat.getColor(requireContext(), R.color.peso_normal))
                 tvDescription.text = getString(R.string.description_peso_normal)
             }
-            in 25.00..29.99 -> { //Sobrepeso
+
+            in IMC.Section3.range -> { //Sobrepeso
                 tvResult.text = getString(R.string.title_sobrepeso)
                 tvResult.setTextColor(ContextCompat.getColor(requireContext(), R.color.peso_sobrepeso))
                 tvDescription.text = getString(R.string.description_sobrepeso)
             }
-            in 30.00..99.00 -> { //Obesidad
+
+            in IMC.Section4.range -> { //Obesidad
                 tvResult.text = getString(R.string.title_obesidad)
                 tvResult.setTextColor(ContextCompat.getColor(requireContext(), R.color.obesidad))
                 tvDescription.text = getString(R.string.description_obesidad)
             }
+
             else -> {//error
                 tvIMC.text = getString(R.string.error)
                 tvResult.text = getString(R.string.error)
@@ -82,10 +80,12 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private fun initComponents() {
-        tvIMC = binding.tvIMC
-        tvResult = binding.tvResult
-        tvDescription = binding.tvDescription
-        btnRecalculate = binding.btnRecalculate
+    private enum class IMC(val range: ClosedFloatingPointRange<Float>) {
+        Section1(0.00f..18.50f),
+        Section2(18.51f..24.99f),
+        Section3(25.00f..29.99f),
+        Section4(30.00f..99.00f),
     }
 }
+
+

@@ -16,12 +16,6 @@
     <fragment
         android:id="@+id/resultFragment"
         android:name="com.rndeveloper.imccalculator.view.ResultFragment"
-        tools:layout="@layout/fragment_result">
-        <action
-            android:id="@+id/action_resultFragment_to_calculatorFragment"
-            app:destination="@id/calculatorFragment"
-            app:popUpTo="@id/calculatorFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_result" />
 
 </navigation>

@@ -4,7 +4,7 @@
     <string name="male">Hombre</string>
     <string name="female">Mujer</string>
     <string name="height">Altura</string>
-    <string name="weight">Peso</string>
+    <string name="fragment_calculator_weight">Peso</string>
     <string name="age">Edad</string>
     <string name="calculate">Calcular</string>
     <string name="recalculate">Re-Calcular</string>
@@ -25,5 +25,7 @@
     <string name="description_obesidad">Estás MUY por encima de lo óptimo para tu peso y altura.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="fragment_calculator_tvcm">%1$d cm</string>
 
 </resources>
