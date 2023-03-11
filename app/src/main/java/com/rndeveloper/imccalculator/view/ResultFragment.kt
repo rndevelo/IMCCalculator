@@ -28,20 +28,10 @@ class ResultFragment : Fragment() {
         return fragmentBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-        initListeners()
-        calculatorViewModel.imc.observe(viewLifecycleOwner) { result ->
-            initUI(result)
-        }
-    }
-
-    private fun initListeners() {
-        binding.btnRecalculate.setOnClickListener {
-            calculatorViewModel.resetData()
-            findNavController().navigateUp()
-        }
+    private fun calculate(view: View) {
+//            calculatorViewModel.resetData()
+        findNavController().navigateUp()
     }
 
     private fun initUI(result: Double) = with(binding) {

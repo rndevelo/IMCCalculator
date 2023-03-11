@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rndeveloper.imccalculator.R
 import com.rndeveloper.imccalculator.databinding.FragmentCalculatorBinding
+import com.rndeveloper.imccalculator.model.GenderType
 import com.rndeveloper.imccalculator.viewmodel.CalculatorViewModel
 
 class CalculatorFragment : Fragment() {
@@ -35,10 +35,10 @@ class CalculatorFragment : Fragment() {
 
     private fun initListeners() = with(binding) {
         viewMale.setOnClickListener {
-            calculatorViewModel.changeGender()
+            calculatorViewModel.changeGender(GenderType.MALE)
         }
         viewFemale.setOnClickListener {
-            calculatorViewModel.changeGender()
+            calculatorViewModel.changeGender(GenderType.FEMALE)
         }
         rsHeight.addOnChangeListener { _, value, _ ->
             calculatorViewModel.getCurrentHeight(value)
@@ -62,25 +62,28 @@ class CalculatorFragment : Fragment() {
     }
 
     private fun initObservers() = with(calculatorViewModel) {
-        isMaleSelected.observe(viewLifecycleOwner) { male ->
-            binding.viewMale.setCardBackgroundColor(getBackgroundColor(male))
-        }
-        isFemaleSelected.observe(viewLifecycleOwner) { female ->
-            binding.viewFemale.setCardBackgroundColor(getBackgroundColor(female))
-        }
-        currentWeight.observe(viewLifecycleOwner) { weight ->
-            binding.tvWeight.text = weight.toString()
-        }
-        currentAge.observe(viewLifecycleOwner) { age ->
-            binding.tvAge.text = age.toString()
-        }
-        currentHeight.observe(viewLifecycleOwner) { currentHeight ->
-            binding.tvHeight.text = getString(R.string.fragment_calculator_tvcm, currentHeight)
+        imc.observe(viewLifecycleOwner) { imc ->
+
+            when (imc.gender) {
+                GenderType.MALE -> {
+                    binding.viewMale.setCardBackgroundColor(R.color.purple_200)
+                    binding.viewFemale.setCardBackgroundColor(R.color.purple_700)
+                }
+
+                GenderType.FEMALE -> {
+
+                    binding.viewMale.setCardBackgroundColor(R.color.purple_700)
+                    binding.viewFemale.setCardBackgroundColor(R.color.purple_200)
+                }
+            }
+
+
+            binding.tvWeight.text = imc.weight.toString()
         }
     }
 
-    private fun getBackgroundColor(isSelectedComponent: Boolean): Int {
-        val colorReference = if (isSelectedComponent) R.color.purple_200 else R.color.purple_700
-        return ContextCompat.getColor(requireContext(), colorReference)
-    }
+//    private fun getBackgroundColor(isSelectedComponent: Boolean): Int {
+//        val colorReference = if (isSelectedComponent) R.color.purple_200 else R.color.purple_700
+//        return ContextCompat.getColor(requireContext(), colorReference)
+//    }
 }
