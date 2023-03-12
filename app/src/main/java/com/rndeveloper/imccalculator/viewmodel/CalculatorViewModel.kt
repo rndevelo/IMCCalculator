@@ -30,6 +30,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun calculateIMC() {
+        // FIXME: En qué momento se tiene en cuenta si eres hombre o mujer para el cálculo del resultado?!!!!
         val df = DecimalFormat("#.##")
         val imc = imcData.weight / (imcData.height.toDouble() / 100 * imcData.height.toDouble() / 100)
         imcData = imcData.copy(result = df.format(imc).toDouble())
