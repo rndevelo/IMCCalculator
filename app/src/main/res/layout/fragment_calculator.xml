@@ -38,8 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/male"
-                android:textColor="@color/white"
                 android:textAllCaps="true"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -71,11 +71,11 @@
             <TextView
                 android:id="@+id/female_text"
                 android:layout_width="wrap_content"
-                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/female"
                 android:textAllCaps="true"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -132,11 +132,11 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/viewWeight"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
         app:cardBackgroundColor="@color/purple_700"
         app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnCalculate"
         app:layout_constraintEnd_toStartOf="@+id/viewAge"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewHeight">
@@ -145,14 +145,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingVertical="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fragment_calculator_weight"
                 android:textAllCaps="true"
-                android:textColor="@color/purple_700" />
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tvWeight"
@@ -195,13 +197,14 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/viewAge"
         android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="8dp"
         app:cardBackgroundColor="@color/purple_700"
         app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewWeight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/viewWeight"
-        app:layout_constraintTop_toBottomOf="@+id/viewHeight">
+        app:layout_constraintTop_toTopOf="@+id/viewWeight">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -214,7 +217,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/age"
                 android:textAllCaps="true"
-                android:textColor="@color/purple_700" />
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tvAge"
