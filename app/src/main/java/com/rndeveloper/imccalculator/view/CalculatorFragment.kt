@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -56,34 +57,28 @@ class CalculatorFragment : Fragment() {
             calculatorViewModel.subtractAge()
         }
         btnCalculate.setOnClickListener {
-            calculatorViewModel.calculateIMC()
-            findNavController().navigate(R.id.action_calculatorFragment_to_resultFragment)
+            calculatorViewModel.calculateIMC { findNavController().navigate(R.id.action_calculatorFragment_to_resultFragment) }
         }
     }
 
     private fun initObservers() = with(calculatorViewModel) {
         imc.observe(viewLifecycleOwner) { imc ->
-
             when (imc.gender) {
                 GenderType.MALE -> {
-                    binding.viewMale.setCardBackgroundColor(R.color.purple_200)
-                    binding.viewFemale.setCardBackgroundColor(R.color.purple_700)
+                    binding.viewMale.setCardBackgroundColor(getBackgroundColor(R.color.purple_200))
+                    binding.viewFemale.setCardBackgroundColor(getBackgroundColor(R.color.purple_700))
                 }
 
                 GenderType.FEMALE -> {
-
-                    binding.viewMale.setCardBackgroundColor(R.color.purple_700)
-                    binding.viewFemale.setCardBackgroundColor(R.color.purple_200)
+                    binding.viewMale.setCardBackgroundColor(getBackgroundColor(R.color.purple_700))
+                    binding.viewFemale.setCardBackgroundColor(getBackgroundColor(R.color.purple_200))
                 }
             }
-
-
             binding.tvWeight.text = imc.weight.toString()
+            binding.tvAge.text = imc.age.toString()
+            binding.tvHeight.text = getString(R.string.fragment_calculator_tvcm, imc.height)
         }
     }
 
-//    private fun getBackgroundColor(isSelectedComponent: Boolean): Int {
-//        val colorReference = if (isSelectedComponent) R.color.purple_200 else R.color.purple_700
-//        return ContextCompat.getColor(requireContext(), colorReference)
-//    }
+    private fun getBackgroundColor(colorReference: Int) = ContextCompat.getColor(requireContext(), colorReference)
 }

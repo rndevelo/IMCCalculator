@@ -28,10 +28,19 @@ class ResultFragment : Fragment() {
         return fragmentBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    private fun calculate(view: View) {
-//            calculatorViewModel.resetData()
-        findNavController().navigateUp()
+        initListeners()
+        calculatorViewModel.imc.observe(viewLifecycleOwner) { imc ->
+            initUI(imc.result)
+        }
+    }
+
+    private fun initListeners() {
+        binding.btnRecalculate.setOnClickListener {
+            calculatorViewModel.resetData { findNavController().navigateUp() }
+        }
     }
 
     private fun initUI(result: Double) = with(binding) {
@@ -51,7 +60,12 @@ class ResultFragment : Fragment() {
 
             in IMC.Section3.range -> { //Sobrepeso
                 tvResult.text = getString(R.string.title_sobrepeso)
-                tvResult.setTextColor(ContextCompat.getColor(requireContext(), R.color.peso_sobrepeso))
+                tvResult.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.peso_sobrepeso
+                    )
+                )
                 tvDescription.text = getString(R.string.description_sobrepeso)
             }
 

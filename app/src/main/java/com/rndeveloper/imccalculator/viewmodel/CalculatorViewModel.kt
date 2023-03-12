@@ -5,63 +5,70 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rndeveloper.imccalculator.model.GenderType
 import com.rndeveloper.imccalculator.model.IMC
+import java.text.DecimalFormat
 
 class CalculatorViewModel : ViewModel() {
 
     private val _imc = MutableLiveData<IMC>()
     val imc: LiveData<IMC> = _imc
 
-    private var imcData: IMC
+    private lateinit var imcData: IMC
 
     init {
+        resetData {}
+    }
+
+    fun resetData(onNavigate: () -> Unit) {
         imcData = IMC(
             gender = GenderType.MALE,
-            height = 120f,
+            height = 120,
             weight = 60,
-            age = 30
+            age = 30,
+            result = 0.0
         )
         _imc.postValue(imcData)
     }
 
-    //    fun resetData() {
-//        _isMaleSelected.value = true
-//        _isFemaleSelected.value = false
-//        _currentWeight.value = 70
-//        _currentAge.value = 30
-//        _currentHeight.value = 120
-//    }
-//
-//    fun calculateIMC() {
-////        FIXME: Decimal format crash
-//        val df = DecimalFormat("0")
-//        val imc =
-//            _currentWeight.value!! / (_currentHeight.value!!.toDouble() / 100 * _currentHeight.value!!.toDouble() / 100)
-//        _imc.postValue(df.format(imc).toDouble())
-//    }
-//
-//    fun getCurrentHeight(value: Float) {
-//        val df = DecimalFormat("#.##")
-//        _currentHeight.postValue(df.format(value).toInt())
-//    }
-//
+    //
+    fun calculateIMC(onNavigate: () -> Unit) {
+//        FIXME: Decimal format crash
+        val df = DecimalFormat("0")
+        val imc =
+            imcData.weight / (imcData.height.toDouble() / 100 * imcData.height.toDouble() / 100)
+        imcData = imcData.copy(result = df.format(imc).toDouble())
+        _imc.postValue(imcData)
+        onNavigate()
+    }
+
+
     fun changeGender(genderType: GenderType) {
         imcData = imcData.copy(gender = genderType)
         _imc.postValue(imcData)
     }
-//
-//    fun plusWeight() {
-//        _currentWeight.postValue(currentWeight.value?.plus(1))
-//    }
-//
-//    fun subtractWeight() {
-//        _currentWeight.postValue(currentWeight.value?.minus(1))
-//    }
-//
-//    fun plusAge() {
-//        _currentAge.postValue(currentAge.value?.plus(1))
-//    }
-//
-//    fun subtractAge() {
-//        _currentAge.postValue(currentAge.value?.minus(1))
-//    }
+
+    fun getCurrentHeight(value: Float) {
+        val df = DecimalFormat("#.##")
+        imcData = imcData.copy(height = df.format(value).toInt())
+        _imc.postValue(imcData)
+    }
+
+    fun plusWeight() {
+        imcData = imcData.copy(weight = imcData.weight.plus(1))
+        _imc.postValue(imcData)
+    }
+
+    fun subtractWeight() {
+        imcData = imcData.copy(weight = imcData.weight.minus(1))
+        _imc.postValue(imcData)
+    }
+
+    fun plusAge() {
+        imcData = imcData.copy(age = imcData.age.plus(1))
+        _imc.postValue(imcData)
+    }
+
+    fun subtractAge() {
+        imcData = imcData.copy(age = imcData.age.minus(1))
+        _imc.postValue(imcData)
+    }
 }
