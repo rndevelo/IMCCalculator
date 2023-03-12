@@ -17,11 +17,7 @@ class ResultFragment : Fragment() {
     private lateinit var binding: FragmentResultBinding
     private val calculatorViewModel: CalculatorViewModel by activityViewModels()
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val fragmentBinding = FragmentResultBinding.inflate(inflater, container, false)
         binding = fragmentBinding
@@ -31,15 +27,13 @@ class ResultFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initListeners()
         calculatorViewModel.imc.observe(viewLifecycleOwner) { imc ->
             initUI(imc.result)
         }
-    }
 
-    private fun initListeners() {
         binding.btnRecalculate.setOnClickListener {
-            calculatorViewModel.resetData { findNavController().navigateUp() }
+            calculatorViewModel.resetData()
+            findNavController().navigateUp()
         }
     }
 
@@ -91,5 +85,3 @@ class ResultFragment : Fragment() {
         Section4(30.00f..99.00f),
     }
 }
-
-

@@ -18,10 +18,7 @@ class CalculatorFragment : Fragment() {
     private lateinit var binding: FragmentCalculatorBinding
     private val calculatorViewModel: CalculatorViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val fragmentBinding = FragmentCalculatorBinding.inflate(inflater, container, false)
         binding = fragmentBinding
@@ -57,28 +54,26 @@ class CalculatorFragment : Fragment() {
             calculatorViewModel.subtractAge()
         }
         btnCalculate.setOnClickListener {
-            calculatorViewModel.calculateIMC { findNavController().navigate(R.id.action_calculatorFragment_to_resultFragment) }
+            calculatorViewModel.calculateIMC()
+            findNavController().navigate(R.id.action_calculatorFragment_to_resultFragment)
         }
     }
 
     private fun initObservers() = with(calculatorViewModel) {
         imc.observe(viewLifecycleOwner) { imc ->
-            when (imc.gender) {
-                GenderType.MALE -> {
-                    binding.viewMale.setCardBackgroundColor(getBackgroundColor(R.color.purple_200))
-                    binding.viewFemale.setCardBackgroundColor(getBackgroundColor(R.color.purple_700))
-                }
-
-                GenderType.FEMALE -> {
-                    binding.viewMale.setCardBackgroundColor(getBackgroundColor(R.color.purple_700))
-                    binding.viewFemale.setCardBackgroundColor(getBackgroundColor(R.color.purple_200))
-                }
-            }
+            binding.viewMale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.MALE))
+            binding.viewFemale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.FEMALE))
             binding.tvWeight.text = imc.weight.toString()
             binding.tvAge.text = imc.age.toString()
             binding.tvHeight.text = getString(R.string.fragment_calculator_tvcm, imc.height)
+            binding.rsHeight.setValues(imc.height.toFloat())
         }
     }
 
-    private fun getBackgroundColor(colorReference: Int) = ContextCompat.getColor(requireContext(), colorReference)
+    private fun getSelectedBackgroundColor(genderSelected: GenderType, genderView: GenderType): Int {
+        return if (genderSelected == genderView)
+            ContextCompat.getColor(requireContext(), R.color.purple_700)
+        else
+            ContextCompat.getColor(requireContext(), R.color.purple_200)
+    }
 }

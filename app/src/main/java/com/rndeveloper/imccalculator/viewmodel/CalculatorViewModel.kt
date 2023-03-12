@@ -15,10 +15,10 @@ class CalculatorViewModel : ViewModel() {
     private lateinit var imcData: IMC
 
     init {
-        resetData {}
+        resetData()
     }
 
-    fun resetData(onNavigate: () -> Unit) {
+    fun resetData() {
         imcData = IMC(
             gender = GenderType.MALE,
             height = 120,
@@ -29,17 +29,12 @@ class CalculatorViewModel : ViewModel() {
         _imc.postValue(imcData)
     }
 
-    //
-    fun calculateIMC(onNavigate: () -> Unit) {
-//        FIXME: Decimal format crash
-        val df = DecimalFormat("0")
-        val imc =
-            imcData.weight / (imcData.height.toDouble() / 100 * imcData.height.toDouble() / 100)
+    fun calculateIMC() {
+        val df = DecimalFormat("#.##")
+        val imc = imcData.weight / (imcData.height.toDouble() / 100 * imcData.height.toDouble() / 100)
         imcData = imcData.copy(result = df.format(imc).toDouble())
         _imc.postValue(imcData)
-        onNavigate()
     }
-
 
     fun changeGender(genderType: GenderType) {
         imcData = imcData.copy(gender = genderType)
@@ -47,8 +42,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun getCurrentHeight(value: Float) {
-        val df = DecimalFormat("#.##")
-        imcData = imcData.copy(height = df.format(value).toInt())
+        imcData = imcData.copy(height = value.toInt())
         _imc.postValue(imcData)
     }
 
