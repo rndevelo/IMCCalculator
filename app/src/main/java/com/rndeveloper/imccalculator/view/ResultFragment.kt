@@ -17,7 +17,11 @@ class ResultFragment : Fragment() {
     private lateinit var binding: FragmentResultBinding
     private val calculatorViewModel: CalculatorViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
         val fragmentBinding = FragmentResultBinding.inflate(inflater, container, false)
         binding = fragmentBinding
@@ -32,6 +36,7 @@ class ResultFragment : Fragment() {
         }
 
         binding.btnRecalculate.setOnClickListener {
+//            FIXME: Esto sigue sin convencerme...
             calculatorViewModel.resetData()
             findNavController().navigateUp()
         }
@@ -82,6 +87,6 @@ class ResultFragment : Fragment() {
         Section1(0.00f..18.50f),
         Section2(18.51f..24.99f),
         Section3(25.00f..29.99f),
-        Section4(30.00f..99.00f),
+        Section4(30.00f..99.00f)
     }
 }

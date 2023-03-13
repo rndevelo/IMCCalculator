@@ -59,14 +59,14 @@ class CalculatorFragment : Fragment() {
         }
     }
 
-    private fun initObservers() = with(calculatorViewModel) {
-        imc.observe(viewLifecycleOwner) { imc ->
-            binding.viewMale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.MALE))
-            binding.viewFemale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.FEMALE))
-            binding.tvWeight.text = imc.weight.toString()
-            binding.tvAge.text = imc.age.toString()
-            binding.tvHeight.text = getString(R.string.fragment_calculator_tvcm, imc.height)
-            binding.rsHeight.setValues(imc.height.toFloat())
+    private fun initObservers() = with(binding) {
+        calculatorViewModel.imc.observe(viewLifecycleOwner) { imc ->
+            viewMale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.MALE))
+            viewFemale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.FEMALE))
+            tvWeight.text = imc.weight.toString()
+            tvAge.text = imc.age.toString()
+            tvHeight.text = getString(R.string.fragment_calculator_tvcm, imc.height)
+            rsHeight.setValues(imc.height.toFloat())
         }
     }
 
