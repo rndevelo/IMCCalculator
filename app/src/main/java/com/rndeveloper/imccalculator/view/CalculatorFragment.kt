@@ -72,8 +72,8 @@ class CalculatorFragment : Fragment() {
 
     private fun getSelectedBackgroundColor(genderSelected: GenderType, genderView: GenderType): Int {
         return if (genderSelected == genderView)
-            ContextCompat.getColor(requireContext(), R.color.purple_700)
-        else
             ContextCompat.getColor(requireContext(), R.color.purple_200)
+        else
+            ContextCompat.getColor(requireContext(), R.color.purple_700)
     }
 }
