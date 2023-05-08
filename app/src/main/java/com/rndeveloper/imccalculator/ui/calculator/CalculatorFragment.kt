@@ -1,4 +1,4 @@
-package com.rndeveloper.imccalculator.view
+package com.rndeveloper.imccalculator.ui.calculator
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.rndeveloper.imccalculator.R
 import com.rndeveloper.imccalculator.databinding.FragmentCalculatorBinding
 import com.rndeveloper.imccalculator.model.GenderType
-import com.rndeveloper.imccalculator.viewmodel.CalculatorViewModel
 
 class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentCalculatorBinding
-    private val calculatorViewModel: CalculatorViewModel by activityViewModels()
+    private val viewModel: CalculatorViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
@@ -27,46 +26,57 @@ class CalculatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initListeners()
-        initObservers()
+
+        setObservers()
+        setListeners()
     }
 
-    private fun initListeners() = with(binding) {
-        viewMale.setOnClickListener {
-            calculatorViewModel.changeGender(GenderType.MALE)
-        }
-        viewFemale.setOnClickListener {
-            calculatorViewModel.changeGender(GenderType.FEMALE)
-        }
-        rsHeight.addOnChangeListener { _, value, _ ->
-            calculatorViewModel.getCurrentHeight(value)
-        }
-        btnPlusWeight.setOnClickListener {
-            calculatorViewModel.plusWeight()
-        }
-        btnSubtractWeight.setOnClickListener {
-            calculatorViewModel.subtractWeight()
-        }
-        btnPlusAge.setOnClickListener {
-            calculatorViewModel.plusAge()
-        }
-        btnSubtractAge.setOnClickListener {
-            calculatorViewModel.subtractAge()
-        }
-        btnCalculate.setOnClickListener {
-            calculatorViewModel.calculateIMC()
-            findNavController().navigate(R.id.action_calculatorFragment_to_resultFragment)
-        }
-    }
-
-    private fun initObservers() = with(binding) {
-        calculatorViewModel.imc.observe(viewLifecycleOwner) { imc ->
+    private fun setObservers() = with(binding) {
+        viewModel.imc.observe(viewLifecycleOwner) { imc ->
             viewMale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.MALE))
             viewFemale.setCardBackgroundColor(getSelectedBackgroundColor(imc.gender, GenderType.FEMALE))
             tvWeight.text = imc.weight.toString()
             tvAge.text = imc.age.toString()
             tvHeight.text = getString(R.string.fragment_calculator_tvcm, imc.height)
             rsHeight.setValues(imc.height.toFloat())
+        }
+    }
+
+    private fun setListeners() = with(binding) {
+        // Gender
+        viewMale.setOnClickListener {
+            viewModel.changeGender(GenderType.MALE)
+        }
+        viewFemale.setOnClickListener {
+            viewModel.changeGender(GenderType.FEMALE)
+        }
+
+        // Height
+        rsHeight.addOnChangeListener { _, value, _ ->
+            viewModel.setCurrentHeight(value.toInt())
+        }
+
+        // Weight
+        btnPlusWeight.setOnClickListener {
+            viewModel.changeWeight(binding.tvWeight.text.toString().toInt().inc())
+        }
+        btnSubtractWeight.setOnClickListener {
+            viewModel.changeWeight(binding.tvWeight.text.toString().toInt().dec())
+        }
+
+        // Age
+        btnPlusAge.setOnClickListener {
+            viewModel.changeAge(binding.tvAge.text.toString().toInt().inc())
+        }
+        btnSubtractAge.setOnClickListener {
+            viewModel.changeAge(binding.tvAge.text.toString().toInt().dec())
+        }
+
+        // Button Calculate
+        btnCalculate.setOnClickListener {
+            CalculatorFragmentDirections.actionCalculatorFragmentToResultFragment(viewModel.imc.value!!).let { action ->
+                findNavController().navigate(action)
+            }
         }
     }
 

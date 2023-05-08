@@ -1,4 +1,4 @@
-package com.rndeveloper.imccalculator.view
+package com.rndeveloper.imccalculator.ui.result
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,41 +8,46 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.rndeveloper.imccalculator.R
 import com.rndeveloper.imccalculator.databinding.FragmentResultBinding
-import com.rndeveloper.imccalculator.viewmodel.CalculatorViewModel
+import com.rndeveloper.imccalculator.model.format
 
 class ResultFragment : Fragment() {
 
-    private lateinit var binding: FragmentResultBinding
-    private val calculatorViewModel: CalculatorViewModel by activityViewModels()
+    private var _binding: FragmentResultBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        val fragmentBinding = FragmentResultBinding.inflate(inflater, container, false)
-        binding = fragmentBinding
-        return fragmentBinding.root
+    private val viewModel: ResultViewModel by activityViewModels()
+    private val safeArgs: ResultFragmentArgs by navArgs()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        FragmentResultBinding.inflate(inflater, container, false).apply {
+            _binding = this
+            return this.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        calculatorViewModel.imc.observe(viewLifecycleOwner) { imc ->
-            initUI(imc.result)
+        viewModel.result.observe(viewLifecycleOwner) { result ->
+            setUI(result.format())
         }
 
+        viewModel.calculateIMC(safeArgs.imc)
+
         binding.btnRecalculate.setOnClickListener {
-//            FIXME: Esto sigue sin convencerme...
-            calculatorViewModel.resetData()
             findNavController().navigateUp()
         }
     }
 
-    private fun initUI(result: Double) = with(binding) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setUI(result: Double) = with(binding) {
         tvIMC.text = result.toString()
         when (result) {
             in IMC.Section1.range -> { //Bajo peso

@@ -8,7 +8,7 @@
 
     android:paddingHorizontal="16dp"
     android:paddingVertical="32dp"
-    tools:context=".view.ResultFragment">
+    tools:context=".ui.result.ResultFragment">
 
     <TextView
         android:id="@+id/tvTitle"

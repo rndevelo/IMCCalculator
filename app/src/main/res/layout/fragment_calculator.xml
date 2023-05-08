@@ -115,12 +115,14 @@
                 android:text="@string/fragment_calculator_tvcm"
                 android:textColor="@color/white"
                 android:textSize="38sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="150 cm" />
 
             <com.google.android.material.slider.RangeSlider
                 android:id="@+id/rsHeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:value="120"
                 android:stepSize="1"
                 android:valueFrom="120"
                 android:valueTo="230" />
@@ -264,8 +266,8 @@
         android:layout_height="80dp"
         android:backgroundTint="@color/purple_700"
         android:text="@string/calculate"
-        android:textSize="20sp"
         android:textColor="@color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

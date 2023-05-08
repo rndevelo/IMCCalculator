@@ -5,17 +5,23 @@
     android:id="@+id/nav_graph"
     android:label="@string/app_name"
     app:startDestination="@id/calculatorFragment">
+
     <fragment
         android:id="@+id/calculatorFragment"
-        android:name="com.rndeveloper.imccalculator.view.CalculatorFragment"
+        android:name="com.rndeveloper.imccalculator.ui.calculator.CalculatorFragment"
         tools:layout="@layout/fragment_calculator">
         <action
             android:id="@+id/action_calculatorFragment_to_resultFragment"
             app:destination="@id/resultFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/resultFragment"
-        android:name="com.rndeveloper.imccalculator.view.ResultFragment"
-        tools:layout="@layout/fragment_result" />
+        android:name="com.rndeveloper.imccalculator.ui.result.ResultFragment"
+        tools:layout="@layout/fragment_result">
+        <argument
+            android:name="imc"
+            app:argType="com.rndeveloper.imccalculator.model.Imc" />
+    </fragment>
 
 </navigation>
