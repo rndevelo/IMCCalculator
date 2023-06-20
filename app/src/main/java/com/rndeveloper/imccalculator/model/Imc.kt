@@ -27,6 +27,6 @@ enum class GenderType {
     FEMALE
 }
 
-fun Double.format(pattern: String = "#.##") = DecimalFormat(pattern).run {
-    format(this@format).toDouble()
+fun Double.format(): String = DecimalFormat("#.##").run {
+    format(this@format)
 }

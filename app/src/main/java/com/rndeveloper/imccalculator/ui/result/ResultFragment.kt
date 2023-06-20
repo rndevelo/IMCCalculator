@@ -30,9 +30,10 @@ class ResultFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel.result.observe(viewLifecycleOwner) { result ->
-            setUI(result.format())
+            //No necesito formatear el resultado aún,
+            //solamente me hace falta para cuando quiero mostrar el texto. (Línea 53)
+            setUI(result)
         }
 
         viewModel.calculateIMC(safeArgs.imc)
@@ -48,7 +49,8 @@ class ResultFragment : Fragment() {
     }
 
     private fun setUI(result: Double) = with(binding) {
-        tvIMC.text = result.toString()
+//        Es aquí solo cuando necesito formatear el texto
+        tvIMC.text = result.format()
         when (result) {
             in IMC.Section1.range -> { //Bajo peso
                 tvResult.text = getString(R.string.title_bajo_peso)
