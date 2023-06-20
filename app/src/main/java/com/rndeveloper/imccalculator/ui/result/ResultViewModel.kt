@@ -29,17 +29,23 @@ class ResultViewModel : ViewModel() {
         val (gender: GenderType, height: Int, weight: Int, age: Int) = imc
 
         when (gender) {
-            GenderType.MALE -> maleImc(weight, height / 100.0, age)
-            GenderType.FEMALE -> femaleImc(weight, height / 100.0, age)
+            GenderType.MALE -> maleOrFemaleImc(weight, height / 100.0, age, 20.0..25.0)
+            GenderType.FEMALE -> maleOrFemaleImc(weight, height / 100.0, age, 19.0..24.0)
         }.let { imcCalculated ->
             _result.postValue(imcCalculated)
         }
     }
 
+//    There were two same functions than only change one val (normalRange). I created only one function with a new parameter
+
     // Function to calculate the BMI of a man
-    private fun maleImc(weight: Int, height: Double, age: Int): Double {
+    private fun maleOrFemaleImc(
+        weight: Int,
+        height: Double,
+        age: Int,
+        normalRange: ClosedFloatingPointRange<Double>
+    ): Double {
         val bmi: Double = weight / (height * height * 1.0)
-        val normalRange = 20.0..25.0
 
         return when {
             age < 20 || age > 60 -> bmi // Use standard BMI range for ages outside 20-60
@@ -51,29 +57,6 @@ class ResultViewModel : ViewModel() {
 
             bmi > normalRange.endInclusive -> {
                 // Adjust BMI for men above normal range
-                val diff = bmi - normalRange.endInclusive
-                bmi - (diff * 0.1)
-            }
-
-            else -> bmi // BMI is within normal range
-        }
-    }
-
-    // Function to calculate the BMI of a woman
-    private fun femaleImc(weight: Int, height: Double, age: Int): Double {
-        val bmi: Double = weight / (height * height * 1.0)
-        val normalRange = 19.0..24.0
-
-        return when {
-            age < 20 || age > 60 -> bmi // Use standard BMI range for ages outside 20-60
-            bmi < normalRange.start -> {
-                // Adjust BMI for women below normal range
-                val diff = normalRange.start - bmi
-                bmi + (diff * 0.1)
-            }
-
-            bmi > normalRange.endInclusive -> {
-                // Adjust BMI for women above normal range
                 val diff = bmi - normalRange.endInclusive
                 bmi - (diff * 0.1)
             }
